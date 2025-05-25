@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG Chatbot</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <header>
+      <div class="header-brand">
+        <img src="{{ url_for('static', filename='images/blackbot.jpg') }}" alt="Chatbot Logo" class="robot-logo">
+        <h1 class="brand">ChatFlow</h1>
+      </div>
+      <nav>
+        <button id="toggleTheme" class="theme-toggle">Light</button>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </nav>
+    </header>
+    <main>
+      <section class="upload-section">
+        <div class="upload-card" id="uploadCard" style="display: none;">
+          <div id="uploadFormContainer">
+            <form id="uploadForm">
+              <input type="file" id="fileInput" name="file" accept=".pdf,.txt" />
+              <button type="button" onclick="uploadDocument()">Upload</button>
+            </form>
+          </div>
+          <div id="uploadStatus"></div>
+        </div>
+      </section>
+      <section class="chat-section">
+        <div class="chat-window">
+          <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be added here -->
+          </div>
+          <div class="typing" id="typingIndicator" style="display: none;">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="userInput" placeholder="Type a message..." />
+          <button class="send-btn" onclick="sendMessage()">
+            <span>&#9658;</span>
+          </button>
+        </div>
+      </section>
+    </main>
+    <section class="source-docs-section">
+      <h2>Source Text</h2>
+      <div id="sourceDocsWindow" class="source-docs-window"></div>
+    </section>
+  </div>
+  <button class="fab" id="uploadFab" onclick="toggleUploadCard()">
+    <span>+</span>
+  </button>
+  <script src="/static/js/script.js"></script>
+</body>
+</html>

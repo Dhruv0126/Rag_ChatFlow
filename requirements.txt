@@ -1,0 +1,7 @@
+flask
+google-genai
+chromadb
+PyMuPDF
+uuid
+flask-cors
+python-dotenv

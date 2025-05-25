@@ -1,0 +1,669 @@
+:root {
+  /* Theme Colors */
+  --bg: #fafbfc;
+  --fg: #1e1e1e;
+  --container-bg: #fff;
+  --header-bg: #fff;
+  --chat-bg: #ede9fe;
+  --bot-bubble-bg: #fff;
+  --bot-bubble-color: #222;
+  --user-bubble-bg: #7c3aed;
+  --user-bubble-color: #fff;
+  --input-bg: #f6f3fa;
+  --input-color: #222;
+  --border-color: #e9d5ff;
+  --shadow-color: rgba(124, 58, 237, 0.08);
+  --source-bg: #fff;
+  --source-color: #555;
+  --source-border: #eee;
+  --source-chunk-border: #ddd;
+  
+  /* Brand Colors */
+  --main-purple: #7c3aed;
+  --main-purple-dark: #5b21b6;
+  --main-purple-light: #ede9fe;
+  --brand: #7c3aed;
+
+  /* Upload Card Styles */
+  --upload-card-bg: var(--main-purple-light);
+  --upload-shadow-1: rgba(124, 58, 237, 0.3);
+  --upload-shadow-2: rgba(255, 255, 255, 0.6);
+  --upload-shadow-1-hover: rgba(124, 58, 237, 0.3);
+  --upload-shadow-2-hover: rgba(255, 255, 255, 0.6);
+  --upload-shadow-1-focus: rgba(124, 58, 237, 0.3);
+  --upload-shadow-2-focus: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] {
+  --bg: #1e1e1e;
+  --fg: #fafbfc;
+  --container-bg: #2d2d2d;
+  --header-bg: #242424;
+  --chat-bg: #3c3c3c;
+  --bot-bubble-bg: #4a4a4a;
+  --bot-bubble-color: #eee;
+  --user-bubble-bg: #7c3aed;
+  --user-bubble-color: #fff;
+  --input-bg: #3c3c3c;
+  --input-color: #ccc;
+  --border-color: #555;
+  --shadow-color: rgba(124, 58, 237, 0.2);
+  --source-bg: #3c3c3c;
+  --source-color: #eeeeee;
+  --source-border: #555;
+  --source-chunk-border: #555;
+
+  /* Upload Card Styles */
+  --upload-card-bg: #2d2d2d;
+  --upload-shadow-1: rgba(0, 0, 0, 0.5);
+  --upload-shadow-2: rgba(60, 60, 60, 0.5);
+  --upload-shadow-1-hover: rgba(0, 0, 0, 0.5);
+  --upload-shadow-2-hover: rgba(60, 60, 60, 0.5);
+  --upload-shadow-1-focus: rgba(0, 0, 0, 0.5);
+  --upload-shadow-2-focus: rgba(60, 60, 60, 0.5);
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.chat-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: var(--container-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 16px var(--shadow-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+  transition: background-color 0.5s, box-shadow 0.5s;
+}
+
+header {
+  background: var(--header-bg);
+  border-bottom: 2px solid var(--main-purple);
+  padding: 18px 32px 10px 32px;
+  text-align: left;
+  transition: background-color 0.5s;
+}
+
+header nav {
+  margin-top: 10px;
+}
+
+header nav a {
+  color: var(--main-purple);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+.brand {
+  color: var(--brand);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 2rem;
+  margin: 0;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.robot-logo {
+  width: 40px;
+  height: auto;
+  border-radius: 50%;
+  vertical-align: middle;
+  transition: filter 0.3s ease, transform 0.3s ease;
+  animation: float 5s ease-in-out infinite;
+}
+
+.robot-logo:hover {
+  filter: drop-shadow(0 0 6px var(--main-purple-dark));
+  transform: rotate(3deg) scale(1.05);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%     { transform: translateY(-6px); }
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 0 24px;
+}
+
+.upload-section {
+  margin-bottom: 18px;
+}
+
+.upload-card {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 300px;
+  border-radius: 12px;
+  background: var(--upload-card-bg);
+  padding: 20px;
+  box-shadow:
+    6px 6px 12px var(--upload-shadow-1),
+   -6px -6px 12px var(--upload-shadow-2);
+  transition: all 0.3s ease;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.upload-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.upload-card:hover {
+  box-shadow:
+    2px 2px 6px var(--upload-shadow-1-hover),
+   -2px -2px 6px var(--upload-shadow-2-hover);
+}
+
+.upload-card:focus-within {
+  box-shadow:
+    4px 4px 8px var(--upload-shadow-1-focus),
+   -4px -4px 8px var(--upload-shadow-2-focus);
+}
+
+#uploadFormContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#uploadForm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#uploadForm input[type="file"] {
+  flex-shrink: 0;
+}
+
+#uploadForm button {
+  flex-shrink: 0;
+}
+
+#uploadStatus {
+  margin-top: 8px;
+  color: var(--main-purple-dark);
+  font-size: 0.95em;
+}
+
+.chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chat-window {
+  background: var(--chat-bg);
+  border-radius: 8px;
+  padding: 18px 12px;
+  height: 320px;
+    overflow-y: auto;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: background-color 0.5s;
+  scroll-behavior: smooth;
+}
+
+/* Add a subtle scrollbar style */
+.chat-window::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-window::-webkit-scrollbar-track {
+  background: var(--chat-bg);
+  border-radius: 4px;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background: var(--main-purple);
+  border-radius: 4px;
+}
+
+.chat-window::-webkit-scrollbar-thumb:hover {
+  background: var(--main-purple-dark);
+}
+
+.message-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2px;
+}
+
+.user-bubble {
+  background: var(--user-bubble-bg);
+  color: var(--user-bubble-color);
+  border-radius: 16px 16px 4px 16px;
+  padding: 10px 18px;
+  margin-left: auto;
+  max-width: 70%;
+  font-size: 1.05em;
+  box-shadow: 0 1px 4px var(--shadow-color);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s forwards;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.bot-bubble {
+  background: var(--bot-bubble-bg);
+  color: var(--bot-bubble-color);
+  border-radius: 16px 16px 16px 4px;
+  padding: 10px 18px;
+  margin-right: auto;
+  max-width: 70%;
+  font-size: 1.05em;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 4px var(--shadow-color);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.4s forwards;
+  transition: background-color 0.5s, color 0.5s, border-color 0.5s, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.bot-bubble:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.bot-bubble:active {
+  transform: translateY(0);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ede9fe;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.user-avatar {
+  background: var(--main-purple);
+  color: #fff;
+  margin-left: 8px;
+}
+
+.bot-avatar {
+  background: #ede9fe;
+  color: var(--main-purple);
+  margin-right: 8px;
+}
+
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 18px 0;
+}
+
+#userInput {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  font-size: 1em;
+  outline: none;
+  background: var(--input-bg);
+  color: var(--input-color);
+  transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+}
+
+.send-btn {
+  background: var(--main-purple);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.send-btn:hover {
+  background: var(--main-purple-dark);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .chat-container {
+    max-width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  main {
+    padding: 12px 4px 0 4px;
+  }
+  .chat-window {
+    height: 220px;
+    padding: 10px 4px;
+  }
+}
+
+/* Styles for Source Text Section */
+.source-docs-section {
+  margin-top: 20px;
+  padding: 0 24px 24px 24px;
+  border-top: 1px solid var(--source-border);
+  transition: border-color 0.5s, background-color 0.3s ease;
+}
+
+.source-docs-section h3 {
+  font-size: 1.2em;
+  color: #000000;
+    margin-bottom: 10px;
+  }
+  
+.source-docs-window {
+  background: var(--source-bg);
+  border: 1px solid var(--source-border);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 0.9em;
+  color: var(--source-color);
+  transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+}
+
+.source-doc-chunk {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--source-chunk-border);
+  transition: border-color 0.5s;
+}
+
+.source-doc-chunk:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Style for highlighted source chunks */
+.highlighted-source {
+  background-color: var(--main-purple-light);
+  border-left: 4px solid var(--main-purple);
+  padding: 10px 12px;
+  border-radius: 4px;
+}
+
+/* Style for highlighted source chunks in Dark Mode */
+[data-theme="dark"] .highlighted-source {
+    background-color: #2d2d2d;
+    border-left: 4px solid var(--main-purple);
+    padding: 10px 12px;
+    border-radius: 4px;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .source-docs-window {
+    background: #2d2d2d;
+    border: 1px solid #444;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .source-doc-chunk {
+    border-bottom: 1px dashed #444;
+}
+
+@media (max-width: 600px) {
+  .source-docs-section {
+    padding: 12px 4px 12px 4px;
+  }
+  .source-docs-window {
+    max-height: 150px;
+    padding: 8px;
+  }
+}
+
+/* Typing Indicator Styles */
+.typing {
+    display: flex;
+    align-items: center;
+    padding: 10px 18px;
+    margin-right: auto;
+    background: var(--bot-bubble);
+    border-radius: 16px 16px 16px 4px;
+    border: 1px solid #e9d5ff;
+    box-shadow: 0 1px 4px rgba(124,58,237,0.04);
+    width: fit-content;
+}
+
+.typing span {
+    width: 6px;
+    height: 6px;
+    margin: 0 2px;
+    background: var(--main-purple);
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+.typing span:nth-child(2) { animation-delay: .2s; }
+.typing span:nth-child(3) { animation-delay: .4s; }
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 0; }
+    25%, 75% { opacity: 1; }
+}
+
+/* Message Bubble Entrance Animation */
+.user-bubble, .bot-bubble {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.4s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.theme-toggle, .clear-chat {
+  background: var(--main-purple);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  margin-right: 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover, .clear-chat:hover {
+  background: var(--main-purple-dark);
+  transform: translateY(-1px);
+}
+
+.clear-chat {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: var(--main-purple);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.clear-chat:hover {
+  background: var(--main-purple-dark);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.clear-chat:active {
+  transform: scale(0.95);
+}
+
+.clear-icon {
+  line-height: 1;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .clear-chat {
+  background: var(--main-purple);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .clear-chat:hover {
+  background: var(--main-purple-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Add a confirmation dialog style */
+.clear-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--container-bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+  text-align: center;
+}
+
+.clear-confirmation p {
+  margin-bottom: 20px;
+  color: var(--fg);
+}
+
+.clear-confirmation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.clear-confirmation-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-clear {
+  background: var(--main-purple);
+  color: white;
+}
+
+.cancel-clear {
+  background: var(--main-purple-light);
+  color: var(--main-purple-dark);
+}
+
+.confirm-clear:hover {
+  background: var(--main-purple-dark);
+}
+
+.cancel-clear:hover {
+  background: var(--main-purple);
+  color: white;
+}
+
+/* Style for Source Text Section in Dark Mode */
+.dark-mode .source-docs-section h3 {
+    color: #fff; /* Ensure source heading is visible white in dark mode */
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: var(--main-purple);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1000;
+}
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+}
+
+.fab:active {
+  transform: scale(0.95);
+}
+
+/* Dark mode adjustments for FAB */
+[data-theme="dark"] .fab {
+  background: var(--main-purple);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .fab:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Source section highlight animation */
+@keyframes highlightSource {
+  0% { background-color: var(--main-purple-light); }
+  100% { background-color: transparent; }
+  }
