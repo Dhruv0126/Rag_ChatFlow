@@ -1,4 +1,4 @@
-# RAG Chatbot 🤖
+# RAG ChatFlow 🤖
 
 A powerful Retrieval-Augmented Generation (RAG) chatbot that combines the capabilities of large language models with document retrieval to provide accurate and context-aware responses.
 
