@@ -2,11 +2,18 @@ services:
   - type: web
     name: rag-chatbot
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    buildCommand: |
+      python -m pip install --upgrade pip
+      python -m pip install gunicorn==20.1.0
+      python -m pip install -r requirements.txt
+    startCommand: |
+      export PATH="/opt/render/project/src/.venv/bin:$PATH"
+      gunicorn --config gunicorn_config.py app:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.8.0
+      - key: PATH
+        value: /opt/render/project/src/.venv/bin:$PATH
     disk:
       name: rag-data
       mountPath: /opt/render/project/src/chroma_db
