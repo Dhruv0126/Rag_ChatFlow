@@ -48,8 +48,28 @@
       </section>
     </main>
     <section class="source-docs-section">
-      <h2>Source Text</h2>
-      <div id="sourceDocsWindow" class="source-docs-window"></div>
+      <div class="source-header">
+        <h2>Source Text</h2>
+        <div class="source-controls">
+          <button id="toggleSource" class="source-toggle">Show Sources</button>
+          <button id="clearSources" class="clear-sources">Clear Sources</button>
+        </div>
+      </div>
+      <div id="sourceDocsWindow" class="source-docs-window">
+        <div class="source-info">
+          <div class="source-stats">
+            <span id="totalChunks">Total Chunks: 0</span>
+            <span id="usedChunks">Used Chunks: 0</span>
+          </div>
+          <div class="source-filters">
+            <label>
+              <input type="checkbox" id="showOnlyUsed" checked>
+              Show only used chunks
+            </label>
+          </div>
+        </div>
+        <div id="sourceContent" class="source-content"></div>
+      </div>
     </section>
   </div>
   <button class="fab" id="uploadFab" onclick="toggleUploadCard()">

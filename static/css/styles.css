@@ -259,6 +259,39 @@ main {
   display: flex;
   align-items: flex-end;
   margin-bottom: 2px;
+  gap: 8px;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.bot-message {
+  justify-content: flex-start;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.user-avatar {
+  background: var(--main-purple);
+  color: #fff;
+  order: 2; /* Place after the bubble */
+}
+
+.bot-avatar {
+  background: #ede9fe;
+  color: var(--main-purple);
+  order: 1; /* Place before the bubble */
 }
 
 .user-bubble {
@@ -266,7 +299,6 @@ main {
   color: var(--user-bubble-color);
   border-radius: 16px 16px 4px 16px;
   padding: 10px 18px;
-  margin-left: auto;
   max-width: 70%;
   font-size: 1.05em;
   box-shadow: 0 1px 4px var(--shadow-color);
@@ -274,6 +306,7 @@ main {
   transform: translateY(10px);
   animation: fadeInUp 0.4s forwards;
   transition: background-color 0.5s, color 0.5s;
+  order: 1; /* Place before the avatar */
 }
 
 .bot-bubble {
@@ -281,7 +314,6 @@ main {
   color: var(--bot-bubble-color);
   border-radius: 16px 16px 16px 4px;
   padding: 10px 18px;
-  margin-right: auto;
   max-width: 70%;
   font-size: 1.05em;
   border: 1px solid var(--border-color);
@@ -291,6 +323,7 @@ main {
   animation: fadeInUp 0.4s forwards;
   transition: background-color 0.5s, color 0.5s, border-color 0.5s, transform 0.2s ease;
   cursor: pointer;
+  order: 2; /* Place after the avatar */
 }
 
 .bot-bubble:hover {
@@ -300,31 +333,6 @@ main {
 
 .bot-bubble:active {
   transform: translateY(0);
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #ede9fe;
-  margin: 0 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
-.user-avatar {
-  background: var(--main-purple);
-  color: #fff;
-  margin-left: 8px;
-}
-
-.bot-avatar {
-  background: #ede9fe;
-  color: var(--main-purple);
-  margin-right: 8px;
 }
 
 .chat-input-row {
@@ -385,41 +393,143 @@ main {
 
 /* Styles for Source Text Section */
 .source-docs-section {
-  margin-top: 20px;
-  padding: 0 24px 24px 24px;
-  border-top: 1px solid var(--source-border);
-  transition: border-color 0.5s, background-color 0.3s ease;
-}
-
-.source-docs-section h3 {
-  font-size: 1.2em;
-  color: #000000;
-    margin-bottom: 10px;
-  }
-  
-.source-docs-window {
   background: var(--source-bg);
-  border: 1px solid var(--source-border);
-  border-radius: 8px;
-  padding: 12px;
-  max-height: 200px;
+  border-top: 1px solid var(--source-border);
+  padding: 16px;
+  transition: background-color 0.5s;
+}
+
+.source-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.source-header h2 {
+  margin: 0;
+  color: var(--brand);
+  font-size: 1.2rem;
+}
+
+.source-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.source-toggle, .clear-sources {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background: var(--main-purple-light);
+  color: var(--main-purple);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.source-toggle:hover, .clear-sources:hover {
+  background: var(--main-purple);
+  color: white;
+}
+
+.source-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: var(--main-purple-light);
+  border-radius: 4px;
+}
+
+.source-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.9rem;
+  color: var(--main-purple);
+}
+
+.source-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.source-filters label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--main-purple);
+  cursor: pointer;
+}
+
+.source-content {
+  max-height: 300px;
   overflow-y: auto;
-  font-size: 0.9em;
+  padding: 8px;
+  background: var(--source-bg);
+  border-radius: 4px;
+  border: 1px solid var(--source-border);
+}
+
+.source-chunk {
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 1px solid var(--source-chunk-border);
+  border-radius: 4px;
+  background: var(--source-bg);
+  transition: all 0.3s ease;
+}
+
+.source-chunk:hover {
+  border-color: var(--main-purple);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.source-chunk-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--source-chunk-border);
+}
+
+.source-chunk-info {
+  display: flex;
+  gap: 12px;
+  font-size: 0.9rem;
   color: var(--source-color);
-  transition: background-color 0.5s, color 0.5s, border-color 0.5s;
 }
 
-.source-doc-chunk {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px dashed var(--source-chunk-border);
-  transition: border-color 0.5s;
+.source-chunk-content {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--source-color);
+  white-space: pre-wrap;
 }
 
-.source-doc-chunk:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
+.source-chunk.used {
+  border-left: 4px solid var(--main-purple);
+  background: var(--main-purple-light);
+}
+
+.source-chunk.used .source-chunk-header {
+  color: var(--main-purple);
+}
+
+.source-chunk.used .source-chunk-content {
+  color: var(--fg);
+}
+
+[data-theme="dark"] .source-chunk.used {
+  background: rgba(124, 58, 237, 0.1);
+}
+
+[data-theme="dark"] .source-chunk.used .source-chunk-content {
+  color: var(--fg);
 }
 
 /* Style for highlighted source chunks */

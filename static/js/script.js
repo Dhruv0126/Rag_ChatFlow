@@ -5,6 +5,9 @@ popSound.preload = 'auto';
 // Chat memory management
 const CHAT_MEMORY_KEY = 'chat_history';
 
+let currentSources = [];
+let usedChunkIds = new Set();
+
 // Function to play feedback (sound + vibration)
 function playFeedback() {
     // Play sound
@@ -85,7 +88,7 @@ function loadChatFromMemory() {
 function addMessage(text, sender, shouldSave = true) {
     const chatMessages = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
-    messageDiv.className = 'message-row';
+    messageDiv.className = `message-row ${sender}-message`;
     
     const avatar = document.createElement('div');
     avatar.className = `avatar ${sender}-avatar`;
@@ -103,16 +106,9 @@ function addMessage(text, sender, shouldSave = true) {
         });
     }
     
-    // Append bubble and avatar based on sender
-    if (sender === 'user') {
-        messageDiv.style.justifyContent = 'flex-end';
-        messageDiv.appendChild(bubble);
-        messageDiv.appendChild(avatar);
-    } else {
-        messageDiv.style.justifyContent = 'flex-start';
-        messageDiv.appendChild(avatar);
-        messageDiv.appendChild(bubble);
-    }
+    // Add elements to message div
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(bubble);
     
     chatMessages.appendChild(messageDiv);
     
@@ -123,25 +119,135 @@ function addMessage(text, sender, shouldSave = true) {
     if (shouldSave) {
         saveChatToMemory();
     }
-  }
+}
   
-  async function sendMessage() {
+function updateSourceDisplay() {
+    const sourceContent = document.getElementById('sourceContent');
+    const totalChunks = document.getElementById('totalChunks');
+    const usedChunks = document.getElementById('usedChunks');
+    const showOnlyUsed = document.getElementById('showOnlyUsed').checked;
+    
+    // Update stats
+    totalChunks.textContent = `Total Chunks: ${currentSources.length}`;
+    usedChunks.textContent = `Used Chunks: ${usedChunkIds.size}`;
+    
+    // Clear existing content
+    sourceContent.innerHTML = '';
+    
+    // Filter sources if needed
+    const sourcesToShow = showOnlyUsed 
+        ? currentSources.filter(source => usedChunkIds.has(source.chunk))
+        : currentSources;
+    
+    // Create source chunks
+    sourcesToShow.forEach(source => {
+        const chunkDiv = document.createElement('div');
+        chunkDiv.className = `source-chunk ${usedChunkIds.has(source.chunk) ? 'used' : ''}`;
+        
+        // Create header with metadata
+        const header = document.createElement('div');
+        header.className = 'source-chunk-header';
+        
+        const info = document.createElement('div');
+        info.className = 'source-chunk-info';
+        info.innerHTML = `
+            <span>Source: ${source.source}</span>
+            <span>Chunk #${source.chunk}</span>
+            <span>Words: ${source.word_count}</span>
+            ${source.is_paragraph ? '<span>Complete Paragraph</span>' : ''}
+            <span>Relevance: ${(source.relevance * 100).toFixed(1)}%</span>
+        `;
+        
+        header.appendChild(info);
+        chunkDiv.appendChild(header);
+        
+        // Add content
+        const content = document.createElement('div');
+        content.className = 'source-chunk-content';
+        content.textContent = source.content;
+        chunkDiv.appendChild(content);
+        
+        sourceContent.appendChild(chunkDiv);
+    });
+}
+
+function handleChatResponse(response) {
+    const chatMessages = document.getElementById('chatMessages');
+    const botMessage = document.createElement('div');
+    botMessage.className = 'message-row bot-message';
+    
+    // Add bot avatar
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar bot-avatar';
+    avatar.textContent = 'B';
+    botMessage.appendChild(avatar);
+    
+    // Add message bubble
+    const bubble = document.createElement('div');
+    bubble.className = 'bot-bubble';
+    bubble.textContent = response.answer;
+    botMessage.appendChild(bubble);
+    
+    chatMessages.appendChild(botMessage);
+    
+    // Update sources
+    if (response.sources) {
+        currentSources = response.sources;
+        response.sources.forEach(source => {
+            usedChunkIds.add(source.chunk);
+        });
+        updateSourceDisplay();
+    }
+    
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Add event listeners for source controls
+document.getElementById('toggleSource').addEventListener('click', function() {
+    const sourceWindow = document.getElementById('sourceDocsWindow');
+    const isVisible = sourceWindow.style.display !== 'none';
+    sourceWindow.style.display = isVisible ? 'none' : 'block';
+    this.textContent = isVisible ? 'Show Sources' : 'Hide Sources';
+});
+
+document.getElementById('clearSources').addEventListener('click', function() {
+    currentSources = [];
+    usedChunkIds.clear();
+    updateSourceDisplay();
+});
+
+document.getElementById('showOnlyUsed').addEventListener('change', updateSourceDisplay);
+
+// Update the sendMessage function
+async function sendMessage() {
     const userInput = document.getElementById('userInput');
     const message = userInput.value.trim();
+    
     if (!message) return;
-
-    // Add user message
-    addMessage(message, 'user');
+    
+    // Add user message to chat
+    const chatMessages = document.getElementById('chatMessages');
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message-row user-message';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar user-avatar';
+    avatar.textContent = 'U';
+    userMessage.appendChild(avatar);
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'user-bubble';
+    bubble.textContent = message;
+    userMessage.appendChild(bubble);
+    
+    chatMessages.appendChild(userMessage);
     userInput.value = '';
     
-    // Play feedback for sent message
-    playFeedback();
-
     // Show typing indicator
     const typingIndicator = document.getElementById('typingIndicator');
-    typingIndicator.style.display = 'flex';
-    scrollToBottom(); // Scroll when showing typing indicator
-
+    typingIndicator.style.display = 'block';
+    
     try {
         const response = await fetch('/chat', {
             method: 'POST',
@@ -150,48 +256,26 @@ function addMessage(text, sender, shouldSave = true) {
             },
             body: JSON.stringify({ message }),
         });
-
+        
         const data = await response.json();
         
-        // Hide typing indicator
-        typingIndicator.style.display = 'none';
-
-        if (data.error) {
-            addMessage('Error: ' + data.error, 'bot');
+        if (response.ok) {
+            handleChatResponse(data);
         } else {
-            addMessage(data.answer, 'bot');
-            // Play feedback for received message
-            playFeedback();
-            // Update source documents if they exist
-            if (data.source_docs && data.source_docs.length > 0) {
-                displayCurrentSourceDocuments(data.source_docs);
-            }
+            throw new Error(data.error || 'Failed to get response');
         }
     } catch (error) {
-        // Hide typing indicator
+        console.error('Error:', error);
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'message-row bot-message error';
+        errorMessage.innerHTML = `
+            <div class="avatar bot-avatar">B</div>
+            <div class="bot-bubble">Sorry, I encountered an error: ${error.message}</div>
+        `;
+        chatMessages.appendChild(errorMessage);
+    } finally {
         typingIndicator.style.display = 'none';
-        console.error('Fetch error:', error);
-    }
-}
-  
-// Function to display only the source documents used for the current response
-function displayCurrentSourceDocuments(docs) {
-    const sourceDocsWindow = document.getElementById('sourceDocsWindow');
-    sourceDocsWindow.innerHTML = ''; // Clear previous sources
-
-    if (docs && docs.length > 0) {
-        const heading = document.createElement('h3');
-        heading.innerText = "Sources used for this response:";
-        sourceDocsWindow.appendChild(heading);
-
-        docs.forEach((doc, index) => {
-            const docDiv = document.createElement('div');
-            docDiv.className = 'source-doc-chunk highlighted-source'; // Add highlighted class
-            docDiv.innerText = `Chunk ${index + 1}: ${doc}`;
-            sourceDocsWindow.appendChild(docDiv);
-        });
-    } else {
-        sourceDocsWindow.innerText = "No relevant source documents found for this response.";
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
   
