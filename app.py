@@ -164,7 +164,7 @@ def upload():
         if not para:
             continue
             
-            words = para.split()
+        words = para.split()
         para_word_count = len(words)
         
         if current_word_count + para_word_count > 200:
@@ -229,13 +229,13 @@ def upload():
             if idx < len(chunks) - 1:  # Don't delay after the last chunk
                 time.sleep(2)  # 2 second delay between chunks
             
-        # Unique ID
-        chunk_id = str(uuid.uuid4())
+            # Unique ID
+            chunk_id = str(uuid.uuid4())
             # Add to ChromaDB with enhanced metadata
-        collection.add(
-            ids=[chunk_id],
-            documents=[chunk],
-            embeddings=[emb_values],
+            collection.add(
+                ids=[chunk_id],
+                documents=[chunk],
+                embeddings=[emb_values],
                 metadatas=[{
                     "source": filename,
                     "chunk": idx,
