@@ -184,7 +184,7 @@ SECRET_KEY=your_secret_key
 python app.py
 
 # Production
-gunicorn -c gunicorn_config.py app:app
+gunicorn app:app
 ```
 
 ## Error Handling
