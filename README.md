@@ -3,6 +3,10 @@
 ## Project Overview
 This is a Retrieval-Augmented Generation (RAG) chatbot that combines document processing, semantic search, and AI-powered responses. The system allows users to upload documents (PDF/TXT), processes them into chunks, and uses them as a knowledge base for answering questions.
 
+## Live Demo
+
+[https://rag-chatflow-dhruv0126.onrender.com](https://rag-chatflow-dhruv0126.onrender.com)
+
 ## Architecture
 
 ### 1. Frontend Components
