@@ -246,7 +246,6 @@ def upload():
             )
             successful_chunks += 1
             print(f"Successfully processed chunk {idx + 1}")
-            
         except Exception as e:
             print(f"Error embedding chunk {idx}: {e}")
             return jsonify({"error": f"Failed to embed chunk {idx}. Details: {e}"}), 500

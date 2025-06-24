@@ -108,12 +108,18 @@ header nav a:hover {
 }
 
 .brand {
-  color: var(--brand);
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-size: 2rem;
-  margin: 0;
-  font-weight: bold;
-  letter-spacing: 1px;
+  background: radial-gradient(circle at 50% 50%, #7c3aed, #22d3ee, #f472b6, #f59e42, #7c3aed 80%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  animation: brand-gradient-spin 12s linear infinite;
+}
+
+@keyframes brand-gradient-spin {
+  0% { background-position: 50% 0%; }
+  100% { background-position: 50% 100%; }
 }
 
 .header-brand {
@@ -381,13 +387,147 @@ main {
     min-height: 100vh;
     border-radius: 0;
     box-shadow: none;
+    margin: 0;
   }
   main {
-    padding: 12px 4px 0 4px;
+    padding: 8px 2vw 0 2vw;
   }
   .chat-window {
-    height: 220px;
-    padding: 10px 4px;
+    height: 40vh;
+    min-height: 180px;
+    padding: 8px 2px;
+    font-size: 0.98em;
+  }
+  .chat-input-row {
+    padding: 6px 0 12px 0;
+    gap: 4px;
+  }
+  #userInput {
+    font-size: 1em;
+    padding: 10px 10px;
+  }
+  .send-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1em;
+  }
+  .upload-card {
+    width: 92vw;
+    min-width: unset;
+    right: 4vw;
+    bottom: 80px;
+    padding: 14px 8px;
+  }
+  .fab {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    right: 4vw;
+    bottom: 16px;
+  }
+  .source-docs-section {
+    padding: 8px 2vw 8px 2vw;
+  }
+  .source-docs-window {
+    max-height: 120px;
+    padding: 4px;
+    font-size: 0.95em;
+  }
+  .source-header h2 {
+    font-size: 1em;
+  }
+  .source-chunk {
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+  .source-chunk-header {
+    font-size: 0.95em;
+    padding-bottom: 4px;
+  }
+  .source-chunk-content {
+    font-size: 0.93em;
+  }
+  .typing {
+    padding: 8px 10px;
+    font-size: 0.95em;
+  }
+  header {
+    padding: 12px 10px 6px 10px;
+  }
+  .brand {
+    font-size: 1.3rem;
+  }
+  .robot-logo {
+    width: 32px;
+  }
+}
+
+@media (max-width: 400px) {
+  .chat-container {
+    min-width: 100vw;
+    min-height: 100vh;
+    padding: 0;
+  }
+  .chat-window {
+    height: 32vh;
+    min-height: 120px;
+    font-size: 0.95em;
+  }
+  .upload-card {
+    width: 98vw;
+    right: 1vw;
+    padding: 10px 2px;
+  }
+  .fab {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    right: 2vw;
+    bottom: 10px;
+  }
+  .source-docs-section {
+    padding: 4px 1vw 4px 1vw;
+  }
+  .source-docs-window {
+    max-height: 80px;
+    font-size: 0.9em;
+  }
+  .source-header h2 {
+    font-size: 0.95em;
+  }
+  .source-chunk {
+    padding: 5px;
+    margin-bottom: 4px;
+  }
+  .source-chunk-header {
+    font-size: 0.9em;
+    padding-bottom: 2px;
+  }
+  .source-chunk-content {
+    font-size: 0.9em;
+  }
+  .typing {
+    padding: 6px 6px;
+    font-size: 0.9em;
+  }
+  header {
+    padding: 8px 4px 4px 4px;
+  }
+  .brand {
+    font-size: 1.1rem;
+  }
+  .robot-logo {
+    width: 24px;
+  }
+}
+
+/* Hide source docs by default on mobile, show with toggle */
+@media (max-width: 600px) {
+  #sourceDocsWindow {
+    display: none;
+  }
+  .source-header .source-toggle {
+    display: inline-block;
   }
 }
 
@@ -557,16 +697,6 @@ main {
 
 [data-theme="dark"] .source-doc-chunk {
     border-bottom: 1px dashed #444;
-}
-
-@media (max-width: 600px) {
-  .source-docs-section {
-    padding: 12px 4px 12px 4px;
-  }
-  .source-docs-window {
-    max-height: 150px;
-    padding: 8px;
-  }
 }
 
 /* Typing Indicator Styles */
@@ -777,3 +907,17 @@ main {
   0% { background-color: var(--main-purple-light); }
   100% { background-color: transparent; }
   }
+
+@media (max-width: 400px) {
+  .auth-container {
+    margin: 10px 2vw;
+    padding: 10px 2vw;
+    max-width: 98vw;
+  }
+  .theme-toggle {
+    top: 8px !important;
+    right: 8px !important;
+    padding: 10px 16px;
+    font-size: 1em;
+  }
+}
