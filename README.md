@@ -1,16 +1,18 @@
-# RAG Chatbot
+# 🤖 RAG CHATFLOW
 
-A polished document-based AI chat app. Upload a PDF or TXT file, then ask smart questions and get answers with exact source support.
+**Project name:** RAG CHATFLOW — a polished document-powered AI chat experience.
+
+Upload a PDF or TXT file, ask natural questions, and receive intelligent answers with source context.
 
 [Live demo](https://dhruv0126ragchatflow.up.railway.app/) • [Run locally](#quick-start)
 
 ---
 
-## What makes it special
-- Fast document conversion to searchable chunks
-- Semantic search with local embeddings
-- Smooth chat UI with source references
-- Persistent ChromaDB storage for document history
+## ✨ What makes it special
+- ✅ Fast document conversion into searchable chunks
+- 🔍 Semantic search with local embeddings
+- 💬 Smooth chat UI with source references
+- 🧠 Persistent ChromaDB storage for document memory
 
 ---
 
