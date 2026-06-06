@@ -34,13 +34,13 @@ This is a Retrieval-Augmented Generation (RAG) chatbot that combines document pr
 
 - **Vector Database (ChromaDB)**
   - Persistent storage of document chunks
-  - 3072-dimensional embeddings
+  - 384-dimensional embeddings (`all-MiniLM-L6-v2`)
   - Cosine similarity search
   - Metadata storage for each chunk
 
-- **AI Integration (Google Gemini)**
-  - Text embedding using `gemini-embedding-exp-03-07`
-  - Response generation using `gemini-2.0-flash`
+- **AI Integration (Groq + local embeddings)**
+  - Text embedding via `sentence-transformers` (`all-MiniLM-L6-v2`)
+  - Response generation using Groq `llama-3.3-70b-versatile`
   - Rate limit handling with retry logic
   - Error handling and fallback mechanisms
 
@@ -84,7 +84,7 @@ This is a Retrieval-Augmented Generation (RAG) chatbot that combines document pr
 
 3. Response Generation
    - Build context from relevant chunks
-   - Generate response using Gemini
+   - Generate response using Groq
    - Return answer with source information
 ```
 
@@ -124,7 +124,7 @@ This is a Retrieval-Augmented Generation (RAG) chatbot that combines document pr
 
 ### 2. Enhanced Search
 - **Semantic Search**
-  - Uses 3072-dimensional embeddings
+  - Uses 384-dimensional embeddings
   - Cosine similarity matching
   - Top-k retrieval
   - Relevance scoring
@@ -160,7 +160,7 @@ This is a Retrieval-Augmented Generation (RAG) chatbot that combines document pr
 ```bash
 - Python 3.8+
 - Node.js (for development)
-- Google Gemini API key
+- Groq API key
 - Virtual environment
 ```
 
@@ -178,7 +178,7 @@ pip install -r requirements.txt
 ### 3. Configuration
 ```python
 # Required environment variables
-GEMINI_API_KEY=your_api_key
+GROQ_API_KEY=your_api_key
 SECRET_KEY=your_secret_key
 ```
 
