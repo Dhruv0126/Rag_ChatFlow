@@ -2,7 +2,7 @@
 
 A polished document-based AI chat app. Upload a PDF or TXT file, then ask smart questions and get answers with exact source support.
 
-[Live demo](https://rag-chatflow-dhruv0126.onrender.com) • [Run locally](#quick-start)
+[Live demo](https://dhruv0126ragchatflow.up.railway.app/) • [Run locally](#quick-start)
 
 ---
 
